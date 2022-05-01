@@ -1,0 +1,38 @@
+X_d2  i1  o1  _net10  NAND
+X_d7  i2  _net10  _net6  NOR
+X_d8  _net6  _out2  INV
+X_d10  _net6  i3  _out5  AND
+X_kk_d1  _kk_net2  _kk_net3  _kk_net5  XOR
+X_kk_d2  _kk_net4  _kk_out2  o1  NAND
+X_kk_d7  _kk_net4  _kk_net5  _kk_net6  NOR
+X_kk_d8  _kk_net6  _kk_out2  INV
+X_kk_d10  _kk_net5  i2  _kk_out5  AND
+X_kk_c1_d1  i1  i2  _kk_c1_net2  NAND
+X_kk_c1_d2  _kk_c1_net2  _kk_c1_net3  INV
+X_kk_c1_d3  _kk_c1_net4  i2  _kk_net2  NOR
+X_kk_c1_c1_e1  _kk_c1_net3  _kk_c1_c1_net2  INV
+X_kk_c1_c1_e2  _kk_c1_c1_net2  i2  _kk_c1_net4  NAND
+X_kk_c2_d1  i1  i3  _kk_c2_net2  NAND
+X_kk_c2_d2  _kk_c2_net2  _kk_c2_net3  INV
+X_kk_c2_d3  _kk_c2_net4  i3  _kk_net3  NOR
+X_kk_c2_c1_e1  _kk_c2_net3  _kk_c2_c1_net2  INV
+X_kk_c2_c1_e2  _kk_c2_c1_net2  i3  _kk_c2_net4  NAND
+X_kk_c3_e1  i1  _kk_c3_net2  INV
+X_kk_c3_e2  _kk_c3_net2  _kk_net3  _kk_net4  NAND
+X_kk2_d1  _kk2_net2  _kk2_net3  _kk2_net5  XOR
+X_kk2_d2  _kk2_net4  _kk2_out2  _o2  NAND
+X_kk2_d7  _kk2_net4  _kk2_net5  _kk2_net6  NOR
+X_kk2_d8  _kk2_net6  _kk2_out2  INV
+X_kk2_d10  _kk2_net5  i2  _kk2_out5  AND
+X_kk2_c1_d1  i1  i2  _kk2_c1_net2  NAND
+X_kk2_c1_d2  _kk2_c1_net2  _kk2_c1_net3  INV
+X_kk2_c1_d3  _kk2_c1_net4  i2  _kk2_net2  NOR
+X_kk2_c1_c1_e1  _kk2_c1_net3  _kk2_c1_c1_net2  INV
+X_kk2_c1_c1_e2  _kk2_c1_c1_net2  i2  _kk2_c1_net4  NAND
+X_kk2_c2_d1  i1  i3  _kk2_c2_net2  NAND
+X_kk2_c2_d2  _kk2_c2_net2  _kk2_c2_net3  INV
+X_kk2_c2_d3  _kk2_c2_net4  i3  _kk2_net3  NOR
+X_kk2_c2_c1_e1  _kk2_c2_net3  _kk2_c2_c1_net2  INV
+X_kk2_c2_c1_e2  _kk2_c2_c1_net2  i3  _kk2_c2_net4  NAND
+X_kk2_c3_e1  i1  _kk2_c3_net2  INV
+X_kk2_c3_e2  _kk2_c3_net2  _kk2_net3  _kk2_net4  NAND
