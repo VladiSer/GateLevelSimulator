@@ -1,0 +1,9 @@
+X_d1  _net2  _net3  outp  NAND
+X_d4  inp1  _net3  _outp2  XOR
+X_d5  inp1  _net2  _outp3  NAND
+X_c1_d1  inp1  inp2  _c1_net2  NAND
+X_c1_d2  _c1_net2  _c1_net3  INV
+X_c1_d3  _c1_net3  inp2  _net2  NAND
+X_c2_d1  inp1  inp3  _c2_net2  NAND
+X_c2_d2  _c2_net2  _c2_net3  INV
+X_c2_d3  _c2_net3  inp3  _net3  NAND
