@@ -68,7 +68,7 @@ class Gate:
 				self._output = self._input1
 
 	def NOT(self):
-		"""NOT logic function - used on the gate inputs and the result stored in the gate output"""
+		"""NOT logic function - used on the gate input and the result stored in the gate output"""
 		if self._input1 == 0:
 			self._output = 1
 		elif self._input1 == 1:
