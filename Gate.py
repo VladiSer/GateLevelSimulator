@@ -1,7 +1,24 @@
-import Signal
+
+class Port:
+
+	def __init__(self, name, is_input):
+		self._name = name
+		self._is_input = is_input
+
+	@property
+	def name(self):
+		return self._name
+
+	@property
+	def is_input(self):
+		return self._is_input
+
+	def __hash__(self):
+		return hash(id(self))
+
 
 class Gate:
-	"""Class Gate depicts a basic logic gate with 1 or 2 inputs and 1 output """
+	"""Class Gate depicts a basic logic gate with 1 or 2 inputs and at least 1 output """
 	def __init__(self, name, gate_type):
 		"""Initialises the Gate object.
 		Inputs:
@@ -14,107 +31,76 @@ class Gate:
 		ValueError
 			If the given gate type didn't match one of the handled types
 		"""
-		self._input1 = None # value of input1
-		self._input2 = None  # value of input2
-		self._output = None # value of output
-		if gate_type not in ("INV", "OR", "AND", "XOR", "NOR", "NAND", "XNOR", "BUFFER"):
+		if gate_type not in ("INV", "OR", "AND", "XOR", "NOR", "NAND", "XNOR"):
 			raise ValueError(f"{gate_type} is not a valid Gate type")
-		self._gate_type = gate_type # Gate name
+		self._gate_type = gate_type  # Gate name
 		self._name = name
 
-	def connect_inputs(self, input1, input2=None):
-		"""Connects the inputs to the gate
-		Inputs:
-		input1 : int
-			Logic 0 or 1 first input of the gate (only input for INV and BUFFER types)
-		input2 : int
-			Logic 0 or 1 second input of the gate (default is None for the INV and BUFFER types)
-
-		Exceptions:
-		ValueError
-			If input2 is given and gate type is INV or BUFFER.
-			If one of the inputs is not legal - not 0 or 1 (second input can be None for INV and BUFFER types)
-		"""
-		if input2 is None and self._gate_type not in ("INV", "BUFFER"):
-			raise ValueError(f"{self._gate_type} only has one input")
-		if input1 not in (0, 1) or input2 not in (None, 0, 1):
-			raise ValueError(f"At least one of the inputs is invalid")
-		self._input1, self._input2 = input1, input2
-
-	def update_output(self):
+	def get_output(self, *inputs):
 		"""Updates the output of the gate as a logic function of the inputs depicted by the gate type
 		Exceptions:
 		ValueError
 		If one of the inputs (in case of INV and BUFFER input 1) is not connected
 		"""
-		if self._input1 is None or (self._input2 is None and self._gate_type not in ("INV", "BUFFER")):
-			raise ValueError("Inputs are not connected")
-		match self._gate_type:
-			case "INV":
-				self.NOT()
-			case "OR":
-				self.OR()
-			case "AND":
-				self.AND()
-			case "XOR":
-				self.XOR()
-			case "NOR":
-				self.NOR()
-			case "NAND":
-				self.NAND()
-			case "XNOR":
-				self.XNOR()
-			case "BUFFER":
-				self._output = self._input1
+		if len(inputs) > 2 or (len(inputs) > 1 and self._gate_type == "INV"):
+			raise ValueError("Invalid number of inputs to the gate")
 
-	def NOT(self):
+		if len(inputs) == 2 and len(inputs[0]) != len(inputs[1]):
+			raise ValueError("Invalid input lengths")
+
+		if self._gate_type == "INV":
+			return self.__NOT(inputs[0])
+		elif self._gate_type == "OR":
+			return self.__OR(inputs[0], inputs[1])
+		elif self._gate_type == "AND":
+			return self.__AND(inputs[0], inputs[1])
+		elif self._gate_type == "XOR":
+			return self.__XOR(inputs[0], inputs[1])
+		elif self._gate_type == "NOR":
+			return self.__NOT(self.__OR(inputs[0], inputs[1]))
+		elif self._gate_type == "NAND":
+			return self.__NOT(self.__AND(inputs[0], inputs[1]))
+		elif self._gate_type == "XNOR":
+			return self.__NOT(self.__XOR(inputs[0], inputs[1]))
+
+	def __NOT(self, input_vec):
 		"""NOT logic function - used on the gate input and the result stored in the gate output"""
-		if self._input1 == 0:
-			self._output = 1
-		elif self._input1 == 1:
-			self._output = 0
+		output_vec = []
+		for inp in input_vec:
+			if inp == 0:
+				output_vec.append(1)
+			elif inp == 1:
+				output_vec.append(0)
+		return output_vec
 
-	def AND(self):
+	def __AND(self, input_vec1, input_vec2):
 		"""AND logic function - used on the gate inputs and the result stored in the gate output"""
-		if (self._input1, self._input2) == (1, 1):
-			self._output = 1
-		elif (self._input1, self._input2) in ((0, 0), (0, 1), (1, 0)):
-			self._output = 0
+		output_vec = []
+		for i in len(input_vec1):
+			if (input_vec1[i], input_vec2[i]) in ((0, 0), (0, 1), (1, 0)):
+				output_vec.append(0)
+			elif (input_vec1[i], input_vec2[i]) == (1, 1):
+				output_vec.append(1)
+		return output_vec
 
-	def OR(self):
+	def __OR(self, input_vec1, input_vec2):
 		"""OR logic function - used on the gate inputs and the result stored in the gate output"""
-		if (self._input1, self._input2) in ((0, 1), (1, 0), (1, 1)):
-			self._output = 1
-		elif (self._input1, self._input2) == (0, 0):
-			self._output = 0
+		output_vec = []
+		for i in len(input_vec1):
+			if (input_vec1[i], input_vec2[i]) == (0, 0):
+				output_vec.append(0)
+			elif (input_vec1[i], input_vec2[i]) in ((0, 1), (1, 0), (1, 1)):
+				output_vec.append(1)
+		return output_vec
 
-	def XOR(self):
+	def __XOR(self, input_vec1, input_vec2):
+		output_vec = []
 		"""XOR logic function - used on the gate inputs and the result stored in the gate output"""
-		if (self._input1, self._input2) in ((0, 0), (1, 1)):
-			self._output = 0
-		elif (self._input1, self._input2) in ((0, 1), (1, 0)):
-			self._output = 1
-
-	def NAND(self):
-		"""NAND logic function - used on the gate inputs and the result stored in the gate output"""
-		if (self._input1, self._input2) == (1, 1):
-			self._output = 0
-		elif (self._input1, self._input2) in ((0, 0), (0, 1), (1, 0)):
-			self._output = 1
-
-	def NOR(self):
-		"""NOR logic function - used on the gate inputs and the result stored in the gate output"""
-		if (self._input1, self._input2) in ((0, 1), (1, 0), (1, 1)):
-			self._output = 0
-		elif (self._input1, self._input2) == (0, 0):
-			self._output = 1
-
-	def XNOR(self):
-		"""XNOR logic function - used on the gate inputs and the result stored in the gate output"""
-		if (self._input1, self._input2) in ((0, 0), (1, 1)):
-			self._output = 1
-		elif (self._input1, self._input2) in ((0, 1), (1, 0)):
-			self._output = 0
+		for i in len(input_vec1):
+			if (input_vec1[i], input_vec2[i]) in ((0, 0), (1, 1)):
+				output_vec.append(0)
+			elif (input_vec1[i], input_vec2[i]) in ((0, 1), (1, 0)):
+				output_vec.append(1)
 
 	def __hash__(self):
 		return hash(id(self))
