@@ -33,6 +33,9 @@ class Signal:
 	def value_vector(self, val_vector):
 		self._value_vector = val_vector
 
+	def set_val_vec(self, val_vector):
+		self._value_vector = val_vector
+
 	def clear_value_vector(self):
 		self._value_vector = []
 
