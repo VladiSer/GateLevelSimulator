@@ -13,6 +13,11 @@ class Port:
 	def is_input(self):
 		return self._is_input
 
+	def get_output(self, inputs):
+		if len(inputs) != 1:
+			raise ValueError("Invalid number of inputs to the port")
+		return inputs[0]
+
 	def __hash__(self):
 		return hash(id(self))
 
@@ -36,7 +41,7 @@ class Gate:
 		self._gate_type = gate_type  # Gate name
 		self._name = name
 
-	def get_output(self, *inputs):
+	def get_output(self, inputs):
 		"""Updates the output of the gate as a logic function of the inputs depicted by the gate type
 		Exceptions:
 		ValueError
@@ -76,7 +81,7 @@ class Gate:
 	def __AND(self, input_vec1, input_vec2):
 		"""AND logic function - used on the gate inputs and the result stored in the gate output"""
 		output_vec = []
-		for i in len(input_vec1):
+		for i in range(len(input_vec1)):
 			if (input_vec1[i], input_vec2[i]) in ((0, 0), (0, 1), (1, 0)):
 				output_vec.append(0)
 			elif (input_vec1[i], input_vec2[i]) == (1, 1):
@@ -86,7 +91,7 @@ class Gate:
 	def __OR(self, input_vec1, input_vec2):
 		"""OR logic function - used on the gate inputs and the result stored in the gate output"""
 		output_vec = []
-		for i in len(input_vec1):
+		for i in range(len(input_vec1)):
 			if (input_vec1[i], input_vec2[i]) == (0, 0):
 				output_vec.append(0)
 			elif (input_vec1[i], input_vec2[i]) in ((0, 1), (1, 0), (1, 1)):
@@ -96,11 +101,12 @@ class Gate:
 	def __XOR(self, input_vec1, input_vec2):
 		output_vec = []
 		"""XOR logic function - used on the gate inputs and the result stored in the gate output"""
-		for i in len(input_vec1):
+		for i in range(len(input_vec1)):
 			if (input_vec1[i], input_vec2[i]) in ((0, 0), (1, 1)):
 				output_vec.append(0)
 			elif (input_vec1[i], input_vec2[i]) in ((0, 1), (1, 0)):
 				output_vec.append(1)
+		return output_vec
 
 	def __hash__(self):
 		return hash(id(self))
