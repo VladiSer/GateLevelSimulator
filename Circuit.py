@@ -113,7 +113,7 @@ class Circuit:
 			input_vector.append(signal.value_vector)
 		a = vertex.get_output(input_vector)
 		return a
-
+# TODO: try to do memoization
 	def get_outputs(self, inputs):
 		if not inputs:
 			raise ValueError("No inputs have been given")
