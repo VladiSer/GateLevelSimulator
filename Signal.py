@@ -15,7 +15,6 @@ class Signal:
 		self._name = name
 		self._src_gate = src_gate
 		self._dst_gate = dst_gate
-		self._value_vector = []
 
 	def get_end_points(self):
 		"""Gets the gates that the signal connects between them.
@@ -24,20 +23,6 @@ class Signal:
 			A tuple consisting of source gate at index 0 and destination gate at index 1
 		"""
 		return self._src_gate, self._dst_gate
-
-	@property
-	def value_vector(self):
-		return self._value_vector
-
-	@value_vector.setter
-	def value_vector(self, val_vector):
-		self._value_vector = val_vector
-
-	def set_val_vec(self, val_vector):
-		self._value_vector = val_vector
-
-	def clear_value_vector(self):
-		self._value_vector = []
 
 	def get_opposite(self, gate):
 		"""Gets the gate from the opposite side of the gate given
