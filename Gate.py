@@ -1,17 +1,12 @@
 
 class Port:
-
-	def __init__(self, name, is_input):
+	# TODO: documentation
+	def __init__(self, name):
 		self._name = name
-		self._is_input = is_input
 
 	@property
 	def name(self):
 		return self._name
-
-	@property
-	def is_input(self):
-		return self._is_input
 
 	def get_output(self, inputs):
 		if len(inputs) != 1:
@@ -99,8 +94,8 @@ class Gate:
 		return output_vec
 
 	def __XOR(self, input_vec1, input_vec2):
-		output_vec = []
 		"""XOR logic function - used on the gate inputs and the result stored in the gate output"""
+		output_vec = []
 		for i in range(len(input_vec1)):
 			if (input_vec1[i], input_vec2[i]) in ((0, 0), (1, 1)):
 				output_vec.append(0)
