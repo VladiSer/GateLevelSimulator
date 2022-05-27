@@ -3,8 +3,16 @@ from Signal import Signal
 import re
 
 class Circuit:
-	# TODO: documentation
+	"""Class Circuit depicts a connected logical circuit, created from a .gatelevel file"""
 	def __init__(self, gate_level_file, name=None):
+		"""Initialises the Circuit object from the given .gatelevel file.
+		If name is not given, the name of the Circuit is the .gatelevel file name.
+		Inputs:
+		gate_level_file : str
+			A .gatelevel file path, with which the logical circuit will be initialized
+		name : str
+			Circuit name, if such exists, the initial value is None
+		"""
 		self._name = name if name else re.search(r'(?<=/)\w*(?=\.gatelevel)', gate_level_file).group()
 		self._ingoing = {} # key = Dst Gate : value = { Src Gate : Signal }
 		self._outgoing = {} # key = Src Gate : value = { Dst Gate : Signal }
@@ -15,7 +23,15 @@ class Circuit:
 
 
 	def __parse_file(self, gate_level_file):
+		"""Internal function, used to parse the .gatelevel file into the logical gate circuit
+		Inputs:
+		gate_level_file : str
+			A .gatelevel file path
 
+		Exceptions:
+		Exception
+			If the file format is not compatible - not .gatelevel or if the file couldn't be opened
+		"""
 		if not gate_level_file.endswith(".gatelevel"):
 			raise Exception("Incompatible file format")
 		try:
@@ -81,7 +97,14 @@ class Circuit:
 
 
 	def get_output_vectors_file(self, input_vector_file):
+		"""Uses the inputs from the .vec file to generate the outputs and create a .out file with those outputs
+		Inputs:
+		input_vector_file : str
+			A .vec file path
 
+		Outputs:
+			Creates a .out file in the data directory with the name of the Circuit
+		"""
 		output_vectors_dict = self.get_output_values_from_file(input_vector_file)
 		alpha_sorted_output_names = sorted(output_vectors_dict.keys())
 
@@ -96,7 +119,18 @@ class Circuit:
 		f.close()
 
 	def get_output_values_from_file(self, input_vector_file):
+		"""Uses the inputs from .vec file to generate a dictionary of the output vectors
+		Inputs:
+		input_vector_file : str
+			A .vec file path
 
+		Outputs:
+		dict { output name : output vector }, output name: str, output vector: list[int]
+			A dictionary of the output vectors accessed with the respective names
+		Exceptions:
+		Exception
+			If the file format is not compatible - not .vec or if the file couldn't be opened
+		"""
 		if not input_vector_file.endswith(".vec"):
 			raise Exception("Incompatible file format")
 
@@ -117,6 +151,19 @@ class Circuit:
 		return self.get_outputs({inp[0]: inp[1] for inp in input_vectors})
 
 	def __get_outputs_rec(self, gate):
+		"""A recursive internal function, which returns the output of any gate in the Circuit, by generating its
+		input vectors 1st, if needed.
+		All the midway output vectors are saved in a _Gate_outputs_values dictionary to ease on the
+		recursion depth.
+
+		Inputs:
+		gate : Gate/Port
+			A gate whose output we want to generate
+
+		Outputs:
+		list[int] - list of ints
+			An output vector
+		"""
 		input_vector = [] # a list of input vectors for the provided gate
 		for src_gate in self._ingoing[gate]:
 			if src_gate not in self._Gate_outputs_values: # if the output vector of the src_gate unknown yet
@@ -125,6 +172,22 @@ class Circuit:
 		return gate.get_output(input_vector)
 
 	def get_outputs(self, inputs):
+		"""Updates all the outputs of the whole Circuit by taking a list of input vectors
+		Inputs:
+		inputs:dict { input name : input vector }, input name: str, input vector: list[int]
+			A dictionary of the input vectors accessed with the respective names
+
+		Outputs:
+		dict { output name : output vector }, output name: str, output vector: list[int]
+			A dictionary of the output vectors accessed with the respective names
+
+		Exceptions:
+		ValueError
+			If no list of input vectors was given or the number of inputs is incompatible with the number of
+			inputs in the logical circuit.
+		Exception
+			If the .vec file input names are incompatible with the input names of the logical circuit.
+		"""
 		if not inputs:
 			raise ValueError("No inputs have been given")
 
@@ -142,4 +205,5 @@ class Circuit:
 		return {output.name : self.__get_outputs_rec(output) for output in self._outputs.values()}
 
 	def clean_outputs(self):
+		"""Cleans the output vectors of all the gates, has to be done if a new vector file is about to be used"""
 		self._Gate_outputs_values = {}

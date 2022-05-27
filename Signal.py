@@ -6,11 +6,11 @@ class Signal:
 		"""Initialises the Signal object.
 		Inputs:
 		name : str
-			name of the signal
+			Name of the signal
 		src_gate : Gate
-			source gate
+			Source gate
 		dst_gate : Gate
-			destination gate
+			Destination gate
 		"""
 		self._name = name
 		self._src_gate = src_gate
