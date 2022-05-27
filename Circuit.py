@@ -9,7 +9,7 @@ class Circuit:
 		If name is not given, the name of the Circuit is the .gatelevel file name.
 		Inputs:
 		gate_level_file : str
-			A .gatelevel file full path, with which the logical circuit will be initialized
+			A .gatelevel file path, with which the logical circuit will be initialized
 		name : str
 			Circuit name, if such exists, the initial value is None
 		"""
@@ -26,7 +26,7 @@ class Circuit:
 		"""Internal function, used to parse the .gatelevel file into the logical gate circuit
 		Inputs:
 		gate_level_file : str
-			A .gatelevel file full path
+			A .gatelevel file path
 
 		Exceptions:
 		Exception
@@ -100,7 +100,7 @@ class Circuit:
 		"""Uses the inputs from the .vec file to generate the outputs and create a .out file with those outputs
 		Inputs:
 		input_vector_file : str
-			A .vec file full path
+			A .vec file path
 
 		Outputs:
 			Creates a .out file in the data directory with the name of the Circuit
@@ -122,7 +122,7 @@ class Circuit:
 		"""Uses the inputs from .vec file to generate a dictionary of the output vectors
 		Inputs:
 		input_vector_file : str
-			A .vec file full path
+			A .vec file path
 
 		Outputs:
 		dict { output name : output vector }, output name: str, output vector: list[int]
@@ -174,8 +174,8 @@ class Circuit:
 	def get_outputs(self, inputs):
 		"""Updates all the outputs of the whole Circuit by taking a list of input vectors
 		Inputs:
-		inputs: list[list[int]] - list of lists of ints
-			List of input vectors
+		inputs:dict { input name : input vector }, input name: str, input vector: list[int]
+			A dictionary of the input vectors accessed with the respective names
 
 		Outputs:
 		dict { output name : output vector }, output name: str, output vector: list[int]
@@ -205,5 +205,5 @@ class Circuit:
 		return {output.name : self.__get_outputs_rec(output) for output in self._outputs.values()}
 
 	def clean_outputs(self):
-		"""Cleans the midway output vectors, has to be done if a new vector file is about to be used"""
+		"""Cleans the output vectors of all the gates, has to be done if a new vector file is about to be used"""
 		self._Gate_outputs_values = {}

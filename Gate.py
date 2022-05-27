@@ -46,10 +46,6 @@ class Gate:
 		gate_type : str
 			Logic gate type - ex. "INV", "OR", "AND", etc.
 
-		Outputs:
-		list[int] - list of ints
-			An output vector
-
 		Exceptions:
 		ValueError
 			If the given gate type didn't match one of the handled types
@@ -71,7 +67,7 @@ class Gate:
 
 		Exceptions:
 		ValueError
-			If one of the inputs (in case of INV and BUFFER input 1) is not connected
+			If one of the inputs (in case of INV input 1) is not connected
 		"""
 		if len(inputs) > 2 or (len(inputs) > 1 and self._gate_type == "INV"):
 			raise ValueError("Invalid number of inputs to the gate")
@@ -95,7 +91,7 @@ class Gate:
 			return self.__NOT(self.__XOR(inputs[0], inputs[1]))
 
 	def __NOT(self, input_vec):
-		"""NOT logic function - used on the gate input and the result stored in the gate output
+		"""NOT logic function - used on the given input vector input_vec
 		Inputs:
 		input_vec: list[int] - list of ints
 			Input vectors for the function
@@ -113,7 +109,7 @@ class Gate:
 		return output_vec
 
 	def __AND(self, input_vec1, input_vec2):
-		"""AND logic function - used on the gate inputs and the result stored in the gate output
+		"""AND logic function - used on the given input vector input_vec
 		Inputs:
 		input_vec1: list[int] - list of ints
 			1st input vectors for the function
@@ -133,7 +129,7 @@ class Gate:
 		return output_vec
 
 	def __OR(self, input_vec1, input_vec2):
-		"""OR logic function - used on the gate inputs and the result stored in the gate output
+		"""OR logic function - used on the given input vector input_vec
 		Inputs:
 		input_vec1: list[int] - list of ints
 			1st input vectors for the function
@@ -153,7 +149,7 @@ class Gate:
 		return output_vec
 
 	def __XOR(self, input_vec1, input_vec2):
-		"""XOR logic function - used on the gate inputs and the result stored in the gate output
+		"""XOR logic function - used on the given input vector input_vec
 		Inputs:
 		input_vec1: list[int] - list of ints
 			1st input vectors for the function
