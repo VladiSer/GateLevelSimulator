@@ -194,6 +194,7 @@ class Circuit:
 		if len(inputs) != len(self._inputs):
 			raise ValueError("Incompatible inputs")
 
+		self._Gate_outputs_values = {} # Cleans the output vectors of all the gates
 		# adding the input ports vector values to the output values dict
 		for inp in self._inputs.values():
 			try:
@@ -203,7 +204,3 @@ class Circuit:
 
 		# Returning a dictionary of the circuit output names with their output vectors
 		return {output.name : self.__get_outputs_rec(output) for output in self._outputs.values()}
-
-	def clean_outputs(self):
-		"""Cleans the output vectors of all the gates, has to be done if a new vector file is about to be used"""
-		self._Gate_outputs_values = {}

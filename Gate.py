@@ -55,6 +55,11 @@ class Gate:
 		self._gate_type = gate_type  # Gate name
 		self._name = name
 
+	@property
+	def name(self):
+		"""Returns the name of the port"""
+		return self._name
+
 	def get_output(self, inputs):
 		"""Updates the output of the gate as a logic function of the inputs depicted by the gate type
 		Inputs:
